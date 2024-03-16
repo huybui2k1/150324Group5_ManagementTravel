@@ -1,0 +1,206 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@model   IEnumerable<Group5_Management_Library.Models.Product>
+
+@{
+    ViewData["Title"] = "QL Sản Phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<header class="panel-heading">
+    Quản lý Sản Phẩm
+</header>
+<div class="panel-body">
+
+    <p>
+        @Html.ActionLink("Tạo mới","Create","Product", null, new {@class="btn btn-danger"})
+    </p>
+    <div class="text-align">
+        @if (TempData["AlertMessage"] != null)
+        {
+            <div id="AlertBox" class="alert @TempData["AlertType"]">
+
+                @TempData["AlertMessage"]
+            </div>
+        }
+    </div>
+    <div class="row form-body">
+        <div class="form-group mb-4">
+            @using (Html.BeginForm("Index", "Product", FormMethod.Get))
+            {
+                <div class="row col-lg-4">
+                    @Html.TextBox("SearchString", Context.Request.Query["SearchString"],null,new {@class="form-control", @placeholder="Nhập từ khoá cần tìm kiếm"})
+                </div>
+
+                <div class="col-lg-4">
+                    <select id="CityId" name="CityName" class="form-control">
+                        <option value="">-- Select City --</option>
+                        @{
+                            if (ViewBag.City != null)
+                            {
+
+                                @foreach (var city in ViewBag.City as List<SelectListItem>)
+                                {
+                                    @* city.Value*@
+                                    @* <option value="@city.Text">@city.Text</option>*@
+
+                                    <option value="@city.Text" @(city.Text == Context.Request.Query["CityName"] ? "selected" : "")>@city.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <input type="submit" class="btn btn-danger" value="Tìm kiếm" />
+                </div>
+                <div style="clear: both"></div>
+            }
+        </div>
+        @using (Html.BeginForm("DeleteMultiple", "Customer", FormMethod.Post))
+        {
+            <div class="form-group">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                <a href="@Url.Action("Index","Product",new {SearchString=@Context.Request.Query["SearchString"]})">
+                                    @Html.DisplayNameFor(model => model.Id)
+                                </a>
+                            </th>
+                            <th>
+                            <th>                    
+                                <a href="@Url.Action("Index","Product",new {SearchString=@Context.Request.Query["SearchString"]})">
+                                    @Html.DisplayNameFor(model => model.City)
+                                </a>
+                            </th>
+                            <th>
+                                <a href="@Url.Action("Index","Product",new {SearchString=@Context.Request.Query["SearchString"]})">
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </a>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Price)
+                            </th>
+                            <th>
+                                <a href="@Url.Action("Index","Product",new {SearchString=@Context.Request.Query["SearchString"]})">
+                                    @Html.DisplayNameFor(model => model.PictureUrl)
+                                </a>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Type)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Brand)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.QuantityInStock)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PublicId)
+                            </th>
+                            <th>
+                                Chức năng
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                          
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.City)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Price)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PictureUrl)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Type)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Brand)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.QuantityInStock)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PublicId)
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="SelectedCatDelete" value="@item.Id">
+                                        @Html.ActionLink("Sửa", "Edit", new {  id=item.Id  },new {@class="text-danger"}) |
+                                        @Html.ActionLink("Chi tiết", "Details", new { /* id=item.PrimaryKey */ }) |
+                                        @Html.ActionLink("Xoá", "Delete", new {id=item.Id },new {@class="text-danger"})
+                                        <a href="#" temp_href="#" class="delete-link" data-id="@item.Id" data-confirm="Bạn có thật sự muốn xoá?" data-toggle="modal" data-target="#confirmModal">Xoá</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger">Delete Selected Rows</button>
+            </div>
+        }
+        <!-- Modal -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Xác nhận xóa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmMessage"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-danger" id="confirmDelete">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @*  @Html.PagedListPager((IPagedList) Model, page => Url.Action("Index", new {page = page,
+            SearchString = @Context.Request.Query["SearchString"],sortby = @Context.Request.Query["sortby"]}),
+            new X.PagedList.Web.Common.PagedListRenderOptions {
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] { "page-link" }*@
+
+            @* @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", "Customer",new { SearchString = @Context.Request.Query["SearchString"],sortby = @Context.Request.Query["sortby"], page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing( new AjaxOptions()
+            {
+            HttpMethod = "POST",
+            UpdateTargetId = "targetElement",
+            OnSuccess = "onAjaxSuccess",
+            OnFailure = "onAjaxFailure"
+            }))*@
+
+            @Html.PagedListPager((IPagedList) Model, page => Url.Action("Index", new {page = page,
+            SearchString = @Context.Request.Query["SearchString"],sortby = @Context.Request.Query["sortby"]}),
+            new X.PagedList.Web.Common.PagedListRenderOptions {
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] { "page-link" }
+            })
+</div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Admin\js\controller\customerController.js"></script>
+
+}

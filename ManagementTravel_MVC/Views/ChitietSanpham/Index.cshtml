@@ -1,0 +1,124 @@
+﻿@using Project_Travel.Areas.Client.Models
+@model Project_Travel.Areas.Client.Models.Product
+@{
+    ViewData["Title"] = "Chitiet";
+    Layout = "~/Areas/Client/Views/Shared/_Layout2.cshtml";
+
+    StoreContext context = new StoreContext();
+
+    var list = context.Products.ToList();
+}
+
+<div class="flex-box">
+
+    <div class="row  row-cols-md-3 row-cols-lg-5 g-2 mt-1">
+        <div class="lefts col-12 col-md-6 col-lg-6 bg-red mt-2">
+            <div class="left">
+                <div class="big-img">
+                    <img style="justify-content:center" src="@Model.PictureUrl" onclick="showImg(this.src)">
+                </div>
+            </div>
+            <div class="hinhcover">
+                <div class="small-img">
+                    <img src="~/Client/hotel/cover/anh_1.jpg" onclick="showImg(this.src)">
+                </div>
+                <div class="small-img">
+                    <img src="~/Client/hotel/cover/anh_2.jpg" onclick="showImg(this.src)">
+                </div>
+                <div class="small-img">
+                    <img src="~/Client/hotel/cover/anh_3.jpg" onclick="showImg(this.src)">
+                </div>
+                <div class="small-img">
+                    <img src="~/Client/hotel/cover/anh_4.jpg" onclick="showImg(this.src)">
+                </div>
+            </div>
+        </div>
+
+        @* Review *@
+        <div class="rights col-12 col-md-6 col-lg-6 bg-red mt-2">
+            <div class="right text_align_center">
+                <h3>@Model.Name</h3>
+                <div class="ratings">
+                    <div class="container d-flex justify-content-center align-items-center">
+
+                        <div class="card p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="ratings">
+                                    <i class="fa fa-star rating-color"></i>
+                                    <i class="fa fa-star rating-color"></i>
+                                    <i class="fa fa-star rating-color"></i>
+                                    <i class="fa fa-star rating-color"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <h5 class="review-count">12 Reviews</h5>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div class="price text-danger">@Model.Price</div>
+                <del>@Model.Discount</del>
+
+                <div class="quantity">
+                    <p>Quantity :</p>
+                    <input type="number" min="1" max="5" value="1">
+                </div>
+                <div class="btn-box text_align_center">
+                   @* <a href="@Url.Action("Index", "Detail") class="btn btn-danger">View More</a> *@
+                    <a href="/Shopping/AddtoCart/@Model.Id" class="btn btn-danger">View More</a>
+                    <button class="buy-btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="detailTour mt-5 text_align_center">
+    <h3> Travel Tour</h3>
+    <p>As the world becomes increasingly interconnected, the role of the global traveler has never been more important. For those with a passion for exploration and adventure, global travel offers a wealth of opportunities to immerse oneself in new cultures, try new foods, and experience the world in all its diversity. With the help of traveler online platforms, global travelers can easily research and plan their trips, connecting with other travelers and gaining valuable insights into their destinations. These online resources offer everything from travel guides and booking services to user-generated content and recommendations, making it easier than ever to explore the world. Whether you’re a seasoned traveler or just starting out, the global travel experience is one that is both enriching and transformative, and the traveler online platforms available today make it easier than ever to make the most of every journey</p>
+    
+    </div>
+<div class="container">
+        <div class="prodcut_detail p-2">
+          <div class="dichvunoibat text_align_center mt-5">
+                <h3>Outstanding service</h3>
+          </div>  
+
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 g-4 mt-4">
+                @foreach (var item in list.Where(n=>n.Type == 1).Take(3))
+                {
+
+                    <div class="col-12 col-md-6 col-lg-4 bg-white mt-2">
+                        <img class="img-fluid" src="@item.PictureUrl">
+                        <h2>@item.Name</h2>
+                        <h4>@item.Description</h4>
+                        <div class="prices text-center">
+                            <strong class="text-danger">@item.Price</strong>
+                            <del>800.000</del>
+                            <div class="actions text-center m-2">
+                                <a href="@Url.Action("Index", "ChitietSanpham" ,new {id=item.Id})" class="btn btn-danger">View More</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+<script>
+    let bigImg = document.querySelector('.big-img img');
+    function showImg(pic) {
+        bigImg.src = pic;
+    }
+</script>

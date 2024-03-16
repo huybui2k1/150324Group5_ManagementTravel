@@ -1,0 +1,103 @@
+﻿@model Group5_Management_Library.Models.Customer
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create Customer</h1>
+
+<h4>Customer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @*<form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CustomerIdName" class="control-label"></label>
+                <input asp-for="CustomerIdName" class="form-control" />
+                <span asp-validation-for="CustomerIdName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>*@
+
+
+          @using (Html.BeginForm("Create", "Customer", FormMethod.Post))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-block alert-danger fade in" })
+
+@*
+            <div class="form-group">
+                <label asp-for="MaKhachHang" class="control-label"></label>
+                @Html.EditorFor(model=>model.MaKhachHang,new {htmlAttributes= new{@class="form-control", @placeholder="Mời nhập mã khách hàng"} })
+                @Html.ValidationMessageFor(model=> model.MaKhachHang,"",new {@class = "text-danger"})
+                <span asp-validation-for="MaKhachHang" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="TenKhachHang" class="control-label"></label>
+                @Html.EditorFor(model=>model.CustomerIdName,new {htmlAttributes= new{@class="form-control", @placeholder="Mời nhập tên khách hàng"} })
+                @Html.ValidationMessageFor(model=> model.CustomerIdName,"",new {@class = "text-danger"})
+                <span asp-validation-for="TenKhachHang" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiaChi" class="control-label"></label>
+                @Html.EditorFor(model=>model.Address,new {htmlAttributes= new{@class="form-control", @placeholder="Mời nhập địa chỉ"} })
+                @Html.ValidationMessageFor(model=> model.Address,"",new {@class = "text-danger"})
+                <span asp-validation-for="DiaChi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DienThoai" class="control-label"></label>
+                @Html.EditorFor(model=>model.PhoneNumber,new {htmlAttributes= new{@class="form-control", @placeholder="Mời nhập điện thoại"} })
+                @Html.ValidationMessageFor(model=> model.PhoneNumber,"",new {@class = "text-danger"})
+                <span asp-validation-for="DienThoai" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" onclick="return DisplayProgressMessage(this, 'Saving...');" value="Tạo mới" class="btn btn-primary" />
+            </div>
+            @* </form>*@
+        }
+    </div>
+</div>
+<div class="processing-preview hidden">
+</div>
+<div>
+    @Html.ActionLink("Quay trở lại","Index","Customer",null, new {@class="btn btn-danger"})
+</div>
+</div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+    }
+    <script type="text/javascript">
+        function DisplayProgressMessage(ctl, msg) {
+            //if use the submit button, you can use event.preventDefault to prevent the default submit form behavior.
+            event.preventDefault();
+            // Turn off the "Save" button and change text
+            $(ctl).prop("disabled", true).val(msg);
+            // Gray out background on page
+            $("body").addClass("submit-progress-bg");
+            // Wrap in setTimeout so the UI can update the spinners
+            $(".processing-preview").removeClass("hidden");
+            //submit the form.
+            setTimeout(function () {
+                $("form").submit();
+            }, 1);
+            return true;
+        }
+    </script>
+    }

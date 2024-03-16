@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Group5_Management_Library.Models.Customer>
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<header class="panel-heading">
+    Thông tin Khach Hang
+</header>
+<div class="panel-body">
+    <div class="form-group">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                            @Html.DisplayNameFor(model => model.CustomerId)
+                        </a>
+                    </th>
+                    <th>
+                            @Html.DisplayNameFor(model => model.CustomerIdName)
+                        </a>
+                    </th>
+                    <th>       
+                            @Html.DisplayNameFor(model => model.Address)
+                        </a>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                    </th>
+                    <th>
+                        Chức năng
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerIdName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>                 
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        @Html.ActionLink("Quay trở lại","Index","Staff",null, new {@class="btn btn-danger"})
+
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

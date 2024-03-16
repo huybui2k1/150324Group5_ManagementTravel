@@ -1,0 +1,193 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+
+@model IEnumerable<Group5_Management_Library.Models.Staff>
+@{
+    ViewData["Title"] = "QL Nhân Viên";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<header class="panel-heading">
+    Quản lý Nhân Viên
+</header>
+<div class="panel-body">
+
+    <p>
+        @Html.ActionLink("Tạo mới","Create","Staff", null, new {@class="btn btn-danger"})
+    </p>
+    <div class="row form-body">
+        <div class="form-group mb-4">
+            @using (Html.BeginForm("Index", "Staff", FormMethod.Get))
+            {
+                <div class="row col-lg-4">
+                    @Html.TextBox("SearchString", Context.Request.Query["SearchString"],null,new {@class="form-control", @placeholder="Nhập từ khoá cần tìm kiếm"})
+                </div>
+
+                <div class="col-lg-4">
+                    <select id="CityId" name="CityName" class="form-control">
+                        <option value="">-- Select City --</option>
+                        @{
+                            if (ViewBag.City != null)
+                            {
+
+                                @foreach (var city in ViewBag.City as List<SelectListItem>)
+                                {
+                                    @* city.Value*@
+                                    @* <option value="@city.Text">@city.Text</option>*@
+
+                                    <option value="@city.Text" @(city.Text == Context.Request.Query["CityName"] ? "selected" : "")>@city.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <input type="submit" class="btn btn-danger" value="Tìm kiếm" />
+                </div>
+                <div style="clear: both"></div>
+            }
+        </div>
+        @using (Html.BeginForm("DeleteMultiple", "Staff", FormMethod.Post))
+        {
+            <div class="form-group">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                @{
+                                    var sortBy = Context.Request.Query["sortby"] == "id" ? "iddesc" : "id";
+                                }
+                                <a href="@Url.Action("Index","Staff",new {sortBy=sortBy,SearchString=@Context.Request.Query["SearchString"]})">
+                                    @Html.DisplayNameFor(model => model.StaffId)
+                                </a>
+                            </th>
+                            <th>
+
+                                @{
+                                    sortBy = Context.Request.Query["sortby"] == "name" ? "namedesc" : "name";
+                                }
+                                <a href="@Url.Action("Index","Staff",new {sortBy=sortBy,SearchString=@Context.Request.Query["SearchString"]})">
+                                    @Html.DisplayNameFor(model => model.StaffName)
+                                </a>
+                            </th>
+                            <th>
+                                @{
+                                    sortBy = Context.Request.Query["sortby"] == "address" ? "addressdesc" : "address";
+                                }
+                                <a href="@Url.Action("Index","Staff",new {sortBy=sortBy,SearchString=@Context.Request.Query["SearchString"]})">
+                                    @Html.DisplayNameFor(model => model.Role)
+                                </a>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DiaChi)
+                            </th>
+                             <th>
+                                @Html.DisplayNameFor(model => model.DienThoai)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NgaySinh)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserDetail)
+                            </th>
+                            <th>
+                                Chức năng
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StaffId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.StaffName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Role)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DiaChi)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DienThoai)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NgaySinh)
+                                    </td>
+                                 
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserDetail)
+                                    </td>
+
+                                    <td>
+                                        <input type="checkbox" name="SelectedCatDelete" value="@item.StaffId">
+                                        @Html.ActionLink("Sửa", "Edit", new {  id=item.StaffId  },new {@class="text-danger"}) |
+                                        @Html.ActionLink("Chi tiết", "Details", new { /* id=item.PrimaryKey */ }) |
+                                        @Html.ActionLink("Xoá", "Delete", new {id=item.StaffId },new {@class="text-danger"})
+                                        <a href="#" temp_href="#" class="delete-link" data-id="@item.StaffId" data-confirm="Bạn có thật sự muốn xoá?" data-toggle="modal" data-target="#confirmModal">Xoá</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger">Delete Selected Rows</button>
+            </div>
+        }
+        <!-- Modal -->
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmModalLabel">Xác nhận xóa</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmMessage"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-danger" id="confirmDelete">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @*  @Html.PagedListPager((IPagedList) Model, page => Url.Action("Index", new {page = page,
+            SearchString = @Context.Request.Query["SearchString"],sortby = @Context.Request.Query["sortby"]}),
+            new X.PagedList.Web.Common.PagedListRenderOptions {
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] { "page-link" }*@
+
+            @* @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", "Staff",new { SearchString = @Context.Request.Query["SearchString"],sortby = @Context.Request.Query["sortby"], page }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing( new AjaxOptions()
+            {
+            HttpMethod = "POST",
+            UpdateTargetId = "targetElement",
+            OnSuccess = "onAjaxSuccess",
+            OnFailure = "onAjaxFailure"
+            }))*@
+
+            @*@Html.PagedListPager((IPagedList) Model, page => Url.Action("Index", new {page = page,
+            SearchString = @Context.Request.Query["SearchString"],sortby = @Context.Request.Query["sortby"]}),
+            new X.PagedList.Web.Common.PagedListRenderOptions {
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] { "page-link" }
+            })*@
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Admin\js\controller\StaffController.js"></script>
+
+}

@@ -1,0 +1,109 @@
+﻿@model Project_Travel.Areas.Client.Models.PageCustomer
+
+
+@{
+    ViewData["Title"] = "Product";
+    Layout = "~/Areas/Client/Views/Shared/_Layout2.cshtml";
+}
+
+
+<div class="flex-box">
+
+    <div class="row  row-cols-md-3 row-cols-lg-5 g-2 mt-1">
+        <div class="lefts col-12 col-md-6 col-lg-6 bg-red mt-2">
+            <div class="left">
+                <div class="big-img">
+                    <img style="justify-content:center" src="~/Client//hotel/Hotel_1.jpg" onclick="showImg(this.src)">
+                </div>
+            </div>
+            <div class="hinhcover">
+                <div class="small-img">
+                    <img src="~/Client/hotel/cover/anh_1.jpg" onclick="showImg(this.src)">
+                </div>
+                <div class="small-img">
+                    <img src="~/Client/hotel/cover/anh_2.jpg" onclick="showImg(this.src)">
+                </div>
+                <div class="small-img">
+                    <img src="~/Client/hotel/cover/anh_3.jpg" onclick="showImg(this.src)">
+                </div>
+                <div class="small-img">
+                    <img src="~/Client/hotel/cover/anh_4.jpg" onclick="showImg(this.src)">
+                </div>
+            </div>
+        </div>
+
+        <div class="rights col-12 col-md-6 col-lg-6 bg-red mt-2">
+            <div class="right text_align_center">
+                <h3>Hotel Andyra</h3>
+                <div class="ratings">
+                    <div class="container d-flex justify-content-center align-items-center">
+
+                        <div class="card p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="ratings">
+                                    <i class="fa fa-star rating-color"></i>
+                                    <i class="fa fa-star rating-color"></i>
+                                    <i class="fa fa-star rating-color"></i>
+                                    <i class="fa fa-star rating-color"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <h5 class="review-count">12 Reviews</h5>
+                            </div>
+                           
+                        </div>
+
+                    </div>
+                   <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div class="price text-danger">$40</div>
+                <del>800.000</del>
+               
+                <div class="quantity">
+                    <p>Quantity :</p>
+                    <input type="number" min="1" max="5" value="1">
+                </div>
+                <div class="btn-box text_align_center">
+                   <a href="@Url.Action("Index", "Product")">Travel</a> 
+                    @* <button class="cart-btn">Add to Cart</button> *@
+                    <button class="buy-btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="prodcut_detail p-2">
+
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 g-4 mt-4">
+            @foreach (var item in Model.ListProduct)
+            {
+
+                <div class="col-12 col-md-6 col-lg-4 bg-white mt-2">
+                    <img class="img-fluid" src="@item.PictureUrl">
+                    <h2>@item.Name</h2>
+                    <h4>@item.Description</h4>
+                    <div class="prices text-center">
+                        <strong class="text-danger">@item.Price</strong>
+                        <del>800.000</del>
+                        <div class="actions text-center m-2">
+                            <a href="@Url.Action("Index", "Details" ,new {id=item.Id})" class="btn btn-danger">View More</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+    <script>
+        let bigImg = document.querySelector('.big-img img');
+        function showImg(pic) {
+            bigImg.src = pic;
+        }
+    </script>
+
+
+

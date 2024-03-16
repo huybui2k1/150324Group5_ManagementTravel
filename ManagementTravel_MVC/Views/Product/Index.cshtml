@@ -1,0 +1,55 @@
+﻿@model Project_Travel.Areas.Client.Models.ProductModel
+@{
+    ViewData["Title"] = "Product";
+    Layout = "~/Areas/Client/Views/Shared/_Layout2.cshtml";
+}
+
+<div class="prodcut_detail p-2">
+
+    <div class="title1 mt-5 text_align_center">
+        <h3>Accommodation Services</h3>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-2 mt-2">
+        @foreach (var item in Model.LisProduct.Where(n=>n.Brand==1).Take(6))
+            {
+        <div class="col-12 col-md-6 col-lg-4 bg-white mt-2">
+            
+                <img class="img-fluid" src="@item.PictureUrl">
+            <h2>@item.Name</h2>
+            <h4>@item.Description</h4>
+            <div class="prices text-center">
+                <strong class="text-danger">@item.Price</strong>
+                <del>800.000</del>
+                <div class="actions text-center m-2">
+                    <a href="@Url.Action("Index", "ChitietSanpham" ,new {id=item.Id})" class="btn btn-danger">View More</a>
+                </div>
+            </div>
+           
+        </div>
+        }
+        </div>
+
+    <div class="title1 mt-5 text_align_center font-poppins">
+        <h3>Shipping services</h3>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-2 mt-2">
+    @foreach (var item in Model.LisProduct.Where(n=>n.Brand == 2).Take(6))
+    {
+        <div class="col-12 col-md-6 col-lg-4 bg-white mt-2">
+
+            <img class="img-fluid" src="@item.PictureUrl">
+            <h2>@item.Name</h2>
+            <h4>@item.Description</h4>
+            <div class="prices text-center">
+                <strong class="text-danger">@item.Price</strong>
+                <del>800.000</del>
+                <div class="actions text-center m-2">
+                        <a href="@Url.Action("Index", "ChitietSanpham" ,new {id=item.Id})" class="btn btn-danger">View More</a>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+</div>
